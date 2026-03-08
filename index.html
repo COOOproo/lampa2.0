@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>TorrServer Finder</title>
+<style>
+body{background:#0f172a;color:white;font-family:Arial;text-align:center;margin-top:60px}
+button{padding:14px 30px;font-size:18px;border-radius:10px;border:0;background:#22c55e;color:white;cursor:pointer}
+#list{margin-top:40px;font-size:22px}
+</style>
+</head>
+<body>
+
+<h1>TorrServer Working IPs</h1>
+<p>Показывает 10–20 рабочих серверов</p>
+
+<button onclick="load()">Обновить</button>
+
+<div id="list">Загрузка...</div>
+
+<script>
+async function load(){
+    document.getElementById("list").innerHTML="Загрузка...";
+    try{
+        let r = await fetch("servers.json?"+Date.now());
+        let data = await r.json();
+
+        if(!data.length){
+            document.getElementById("list").innerHTML="Рабочие серверы не найдены";
+            return;
+        }
+
+        let html="";
+        data.forEach(ip=>{
+            html += "<div>"+ip+"</div>";
+        });
+
+        document.getElementById("list").innerHTML=html;
+
+    }catch(e){
+        document.getElementById("list").innerHTML="Ошибка загрузки";
+    }
+}
+
+load();
+</script>
+
+</body>
+</html>
